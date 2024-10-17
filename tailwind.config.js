@@ -4,5 +4,5 @@ export default {
   theme: {
     
   },
-  plugins: [],
+  "plugins": ["prettier-plugin-tailwindcss"]
 };

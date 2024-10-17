@@ -13,10 +13,15 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as RegisterImport } from './routes/register'
 import { Route as LoginImport } from './routes/login'
 import { Route as AuthImport } from './routes/_auth'
 import { Route as IndexImport } from './routes/index'
+import { Route as RegisterRegisterSubdomainImport } from './routes/_register/registerSubdomain'
+import { Route as RegisterRegisterAccountImport } from './routes/_register/registerAccount'
 import { Route as ComponentsPlansImport } from './routes/_components/Plans'
+import { Route as ComponentsModalImport } from './routes/_components/Modal'
+import { Route as ComponentsInputImport } from './routes/_components/Input'
 import { Route as ComponentsFeaturesImport } from './routes/_components/Features'
 import { Route as AuthUsersIndexImport } from './routes/_auth/users/index'
 import { Route as AuthGoogleCallbackImport } from './routes/auth/google/callback'
@@ -31,6 +36,11 @@ const AboutLazyRoute = AboutLazyImport.update({
   path: '/about',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/about.lazy').then((d) => d.Route))
+
+const RegisterRoute = RegisterImport.update({
+  path: '/register',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const LoginRoute = LoginImport.update({
   path: '/login',
@@ -47,8 +57,28 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const RegisterRegisterSubdomainRoute = RegisterRegisterSubdomainImport.update({
+  path: '/registerSubdomain',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const RegisterRegisterAccountRoute = RegisterRegisterAccountImport.update({
+  path: '/registerAccount',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const ComponentsPlansRoute = ComponentsPlansImport.update({
   path: '/Plans',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ComponentsModalRoute = ComponentsModalImport.update({
+  path: '/Modal',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ComponentsInputRoute = ComponentsInputImport.update({
+  path: '/Input',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -92,6 +122,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginImport
       parentRoute: typeof rootRoute
     }
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterImport
+      parentRoute: typeof rootRoute
+    }
     '/about': {
       id: '/about'
       path: '/about'
@@ -106,11 +143,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ComponentsFeaturesImport
       parentRoute: typeof rootRoute
     }
+    '/_components/Input': {
+      id: '/_components/Input'
+      path: '/Input'
+      fullPath: '/Input'
+      preLoaderRoute: typeof ComponentsInputImport
+      parentRoute: typeof rootRoute
+    }
+    '/_components/Modal': {
+      id: '/_components/Modal'
+      path: '/Modal'
+      fullPath: '/Modal'
+      preLoaderRoute: typeof ComponentsModalImport
+      parentRoute: typeof rootRoute
+    }
     '/_components/Plans': {
       id: '/_components/Plans'
       path: '/Plans'
       fullPath: '/Plans'
       preLoaderRoute: typeof ComponentsPlansImport
+      parentRoute: typeof rootRoute
+    }
+    '/_register/registerAccount': {
+      id: '/_register/registerAccount'
+      path: '/registerAccount'
+      fullPath: '/registerAccount'
+      preLoaderRoute: typeof RegisterRegisterAccountImport
+      parentRoute: typeof rootRoute
+    }
+    '/_register/registerSubdomain': {
+      id: '/_register/registerSubdomain'
+      path: '/registerSubdomain'
+      fullPath: '/registerSubdomain'
+      preLoaderRoute: typeof RegisterRegisterSubdomainImport
       parentRoute: typeof rootRoute
     }
     '/auth/google/callback': {
@@ -146,9 +211,14 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '': typeof AuthRouteWithChildren
   '/login': typeof LoginRoute
+  '/register': typeof RegisterRoute
   '/about': typeof AboutLazyRoute
   '/Features': typeof ComponentsFeaturesRoute
+  '/Input': typeof ComponentsInputRoute
+  '/Modal': typeof ComponentsModalRoute
   '/Plans': typeof ComponentsPlansRoute
+  '/registerAccount': typeof RegisterRegisterAccountRoute
+  '/registerSubdomain': typeof RegisterRegisterSubdomainRoute
   '/auth/google/callback': typeof AuthGoogleCallbackRoute
   '/users': typeof AuthUsersIndexRoute
 }
@@ -157,9 +227,14 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '': typeof AuthRouteWithChildren
   '/login': typeof LoginRoute
+  '/register': typeof RegisterRoute
   '/about': typeof AboutLazyRoute
   '/Features': typeof ComponentsFeaturesRoute
+  '/Input': typeof ComponentsInputRoute
+  '/Modal': typeof ComponentsModalRoute
   '/Plans': typeof ComponentsPlansRoute
+  '/registerAccount': typeof RegisterRegisterAccountRoute
+  '/registerSubdomain': typeof RegisterRegisterSubdomainRoute
   '/auth/google/callback': typeof AuthGoogleCallbackRoute
   '/users': typeof AuthUsersIndexRoute
 }
@@ -169,9 +244,14 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_auth': typeof AuthRouteWithChildren
   '/login': typeof LoginRoute
+  '/register': typeof RegisterRoute
   '/about': typeof AboutLazyRoute
   '/_components/Features': typeof ComponentsFeaturesRoute
+  '/_components/Input': typeof ComponentsInputRoute
+  '/_components/Modal': typeof ComponentsModalRoute
   '/_components/Plans': typeof ComponentsPlansRoute
+  '/_register/registerAccount': typeof RegisterRegisterAccountRoute
+  '/_register/registerSubdomain': typeof RegisterRegisterSubdomainRoute
   '/auth/google/callback': typeof AuthGoogleCallbackRoute
   '/_auth/users/': typeof AuthUsersIndexRoute
 }
@@ -182,9 +262,14 @@ export interface FileRouteTypes {
     | '/'
     | ''
     | '/login'
+    | '/register'
     | '/about'
     | '/Features'
+    | '/Input'
+    | '/Modal'
     | '/Plans'
+    | '/registerAccount'
+    | '/registerSubdomain'
     | '/auth/google/callback'
     | '/users'
   fileRoutesByTo: FileRoutesByTo
@@ -192,9 +277,14 @@ export interface FileRouteTypes {
     | '/'
     | ''
     | '/login'
+    | '/register'
     | '/about'
     | '/Features'
+    | '/Input'
+    | '/Modal'
     | '/Plans'
+    | '/registerAccount'
+    | '/registerSubdomain'
     | '/auth/google/callback'
     | '/users'
   id:
@@ -202,9 +292,14 @@ export interface FileRouteTypes {
     | '/'
     | '/_auth'
     | '/login'
+    | '/register'
     | '/about'
     | '/_components/Features'
+    | '/_components/Input'
+    | '/_components/Modal'
     | '/_components/Plans'
+    | '/_register/registerAccount'
+    | '/_register/registerSubdomain'
     | '/auth/google/callback'
     | '/_auth/users/'
   fileRoutesById: FileRoutesById
@@ -214,9 +309,14 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRouteWithChildren
   LoginRoute: typeof LoginRoute
+  RegisterRoute: typeof RegisterRoute
   AboutLazyRoute: typeof AboutLazyRoute
   ComponentsFeaturesRoute: typeof ComponentsFeaturesRoute
+  ComponentsInputRoute: typeof ComponentsInputRoute
+  ComponentsModalRoute: typeof ComponentsModalRoute
   ComponentsPlansRoute: typeof ComponentsPlansRoute
+  RegisterRegisterAccountRoute: typeof RegisterRegisterAccountRoute
+  RegisterRegisterSubdomainRoute: typeof RegisterRegisterSubdomainRoute
   AuthGoogleCallbackRoute: typeof AuthGoogleCallbackRoute
 }
 
@@ -224,9 +324,14 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRouteWithChildren,
   LoginRoute: LoginRoute,
+  RegisterRoute: RegisterRoute,
   AboutLazyRoute: AboutLazyRoute,
   ComponentsFeaturesRoute: ComponentsFeaturesRoute,
+  ComponentsInputRoute: ComponentsInputRoute,
+  ComponentsModalRoute: ComponentsModalRoute,
   ComponentsPlansRoute: ComponentsPlansRoute,
+  RegisterRegisterAccountRoute: RegisterRegisterAccountRoute,
+  RegisterRegisterSubdomainRoute: RegisterRegisterSubdomainRoute,
   AuthGoogleCallbackRoute: AuthGoogleCallbackRoute,
 }
 
@@ -245,9 +350,14 @@ export const routeTree = rootRoute
         "/",
         "/_auth",
         "/login",
+        "/register",
         "/about",
         "/_components/Features",
+        "/_components/Input",
+        "/_components/Modal",
         "/_components/Plans",
+        "/_register/registerAccount",
+        "/_register/registerSubdomain",
         "/auth/google/callback"
       ]
     },
@@ -263,14 +373,29 @@ export const routeTree = rootRoute
     "/login": {
       "filePath": "login.tsx"
     },
+    "/register": {
+      "filePath": "register.tsx"
+    },
     "/about": {
       "filePath": "about.lazy.tsx"
     },
     "/_components/Features": {
       "filePath": "_components/Features.tsx"
     },
+    "/_components/Input": {
+      "filePath": "_components/Input.tsx"
+    },
+    "/_components/Modal": {
+      "filePath": "_components/Modal.tsx"
+    },
     "/_components/Plans": {
       "filePath": "_components/Plans.tsx"
+    },
+    "/_register/registerAccount": {
+      "filePath": "_register/registerAccount.tsx"
+    },
+    "/_register/registerSubdomain": {
+      "filePath": "_register/registerSubdomain.tsx"
     },
     "/auth/google/callback": {
       "filePath": "auth/google/callback.tsx"

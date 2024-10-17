@@ -1,8 +1,9 @@
 import axios from "axios";
 import { io } from "socket.io-client";
+import { Envs } from "./envs";
 
 export const api = axios.create({
-  baseURL: "http://localhost:9999",
+  baseURL: Envs.API_URL,
 });
 
-export const socket = io("http://localhost:9999");
+export const socket = io(Envs.API_URL);

@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import cover from "../assets/capa.jpeg";
 import logo from "../assets/logo2.svg";
 import Features from "./_components/Features";
+import { Input } from "./_components/Input";
+import { Modal } from "./_components/Modal";
 import { Plans } from "./_components/Plans";
 
 export const Route = createFileRoute("/")({
@@ -22,6 +24,9 @@ export default function Example() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isSticky, setIsSticky] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [subdomain, setSubdomain] = useState<string>("");
+  const [isSubdomainModalOpen, setIsSubdomainModalOpen] =
+    useState<boolean>(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -55,7 +60,7 @@ export default function Example() {
   return (
     <div className="bg-white" style={{ width: "100%" }}>
       <header
-        className={`bg-white inset-x-0 top-0 z-50 bg-opacity-75 backdrop-blur-sm transition-transform duration-300 ${
+        className={`inset-x-0 top-0 z-50 bg-white bg-opacity-75 backdrop-blur-sm transition-transform duration-300 ${
           isSticky ? "sticky" : ""
         }`}
       >
@@ -92,12 +97,12 @@ export default function Example() {
             ))}
           </div>
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-            <a
-              href="/login"
-              className="text-sm font-semibold leading-6 text-gray-900 hover:text-orange-500"
+            <p
+              onClick={() => setIsSubdomainModalOpen(true)}
+              className="cursor-pointer text-sm font-semibold leading-6 text-gray-900 hover:text-orange-500"
             >
-              Acesse sua garagem <span aria-hidden="true">&rarr;</span>
-            </a>
+              Acesse sua oficina <span aria-hidden="true">&rarr;</span>
+            </p>
           </div>
         </nav>
         <Dialog
@@ -136,12 +141,12 @@ export default function Example() {
                   ))}
                 </div>
                 <div className="py-6">
-                  <a
-                    href="#"
+                  <p
+                    onClick={() => setIsSubdomainModalOpen(true)}
                     className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                   >
                     Acessar minha garagem
-                  </a>
+                  </p>
                 </div>
               </div>
             </div>
@@ -150,7 +155,7 @@ export default function Example() {
       </header>
 
       <div
-        className="relative isolate pb-8 px-6 pt-14 lg:px-8 bg-cover bg-center"
+        className="relative isolate bg-cover bg-center px-6 pb-8 pt-14 lg:px-8"
         style={{
           backgroundImage: `
           linear-gradient(
@@ -192,11 +197,11 @@ export default function Example() {
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
               <a
-                href="#"
+                href="/register"
                 style={{
                   fontWeight: 300,
                 }}
-                className="rounded-md transition-all duration-500 bg-orange-600 px-3.5 py-2.5 text-base font-semibold text-white shadow-sm hover:bg-orange-500 active:bg-orange-600 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600"
+                className="rounded-md bg-orange-600 px-3.5 py-2.5 text-base font-semibold text-white shadow-sm transition-all duration-500 hover:bg-orange-500 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600 active:bg-orange-600"
               >
                 Iniciar teste grátis
               </a>
@@ -212,32 +217,87 @@ export default function Example() {
       </div>
       <Features />
       <Plans />
-      <footer className="bg-white pb-8 flex justify-center items-center flex-col">
-        <div className="w-11/12 grid grid-cols-1 py-16 md:grid-cols-4">
-          <div className="mx-auto px-6 lg:px-8 flex flex-col justify-start items-start">
+      <Modal
+        mobileMenuOpen={isSubdomainModalOpen}
+        setMobileMenuOpen={setIsSubdomainModalOpen}
+        title="Acesse sua oficina"
+        description="Por favor, digite o domínio da sua oficína para que possamos te redirecionar ao seu painel."
+        body={
+          <>
+            <Input
+              name="subdomain"
+              label="Subdomínio"
+              onChange={({ target }) => {
+                const v = target?.value
+                  .replace(/\s+/g, "-")
+                  .normalize("NFD")
+                  .replace(/[\u0300-\u036f]/g, "")
+                  .replace(/[^a-zA-Z0-9-]/g, "");
+                setSubdomain(v);
+              }}
+              value={subdomain}
+              AddonBefore={<span>https://</span>}
+              AddonAfter={<span>.garage.com</span>}
+              paddingLeft={16}
+              paddingRight={36}
+            />
+
+            <div className="relative mt-4 rounded-full px-3 py-1 text-sm leading-6">
+              Ainda não tem subdomínio?{" "}
+              <a
+                href="/register"
+                className="font-semibold text-orange-500 hover:text-orange-300"
+              >
+                <span aria-hidden="true" className="absolute inset-0" />
+                Registre-se <span aria-hidden="true">&rarr;</span>
+              </a>
+            </div>
+          </>
+        }
+        onClose={() => {
+          setSubdomain("");
+        }}
+        onConfirm={() => {
+          window.location.href = `http://${subdomain}${import.meta.env.VITE_ENV === "local" ? "." : "-"}${window.location.host}/login`;
+        }}
+      />
+      <footer className="flex flex-col items-center justify-center bg-white pb-8">
+        <div className="grid w-11/12 grid-cols-1 py-16 md:grid-cols-4">
+          <div className="mx-auto flex flex-col items-start justify-start px-6 lg:px-8">
             <img alt="" src={logo} className="h-8" />
             <p
               style={{ fontWeight: 100, fontFamily: "SF-Pro-Light" }}
-              className="text-base mt-8"
+              className="mt-8 text-base"
             >
               Transformando a vida de pequenos, médios e grandes empreendedores
               com processos simples e eficientes.
             </p>
           </div>
 
-          <div className="mx-auto px-6 lg:px-8 flex flex-col justify-start items-start">
+          <div className="mx-auto flex flex-col items-start justify-start px-6 lg:px-8">
+            <p className="text-lg font-semibold">Produtos</p>
             <a>Termos e condições</a>
           </div>
-          <div className="mx-auto px-6 lg:px-8 flex flex-col justify-start items-start">
+          <div className="mx-auto flex flex-col items-start justify-start px-6 lg:px-8">
+            <p className="text-lg font-semibold">Sobre nós</p>
             <a>Termos e condições</a>
+            <a>Política de privacidade</a>
+            {navigation.map((item) => (
+              <a href={item.href}>{item.name}</a>
+            ))}
           </div>
-          <div className="mx-auto px-6 lg:px-8 flex flex-col justify-start items-start">
-            <a>Termos e condições</a>
+          <div className="mx-auto flex flex-col items-start justify-start px-6 lg:px-8">
+            <p className="text-lg font-semibold">Contato</p>
+            <p className="mt-2 text-gray-600">(45) 98836-9425</p>
+            <p className="mt-2 text-gray-600">
+              Cascavel - PR, Rua tom Jobim 210
+            </p>
+            <p className="mt-2 text-gray-600">contato@garage.com</p>
           </div>
         </div>
 
         <hr className="ml-8 mr-8" />
-        <p className="text-center text-gray-600 mt-8">
+        <p className="mt-8 text-center text-gray-600">
           garage © 2024. Todos os direitos reservados.
         </p>
       </footer>

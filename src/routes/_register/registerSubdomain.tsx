@@ -1,32 +1,32 @@
 import { LoadingOutlined } from "@ant-design/icons";
-import { createFileRoute, useRouter } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { Formik } from "formik";
-import { object, string } from "yup";
-import cover from "../assets/capa.jpeg";
-import logo from "../assets/logo1.svg";
-import { useAuth } from "../contexts/useAuth";
-import { Input } from "./_components/Input";
+import cover from "../../assets/capa.jpeg";
+import logo from "../../assets/logo1.svg";
+import { Input } from "../_components/Input";
 
-export const Route = createFileRoute("/login")({
-  component: Login,
+export const Route = createFileRoute("/_register/registerSubdomain")({
+  component: RegisterSubDomain,
 });
 
-const credentialsSchema = object({
-  email: string()
-    .email("Deve ser um email válido.")
-    .required("Email é obrigatório."),
-  password: string().required("Senha é obrigatória."),
-});
+// const credentialsSchema = object({
+//   email: string()
+//     .email("Deve ser um email válido.")
+//     .required("Email é obrigatório."),
+//   cellphone: string().required("Celular é obrigatório."),
+//   address: object({
+//     street: string().required("Rua é obrigatório."),
+//     number: string().required("Número é obrigatório."),
+//     neighborhood: string().required("Bairro é obrigatório."),
+//     city: string().required("Cidade é obrigatório."),
+//     state: string().required("Estado é obrigatório."),
+//     zip: string().required("CEP é obrigatório."),
+//   }),
+//   garage_name: string().required("Nome da oficina é obrigatório."),
+//   garage_phone: string().required("Telefone da oficina é obrigatório."),
+// });
 
-function Login() {
-  const { token } = useAuth();
-  const router = useRouter();
-  const subdomain = window.location.hostname.split(".")[0];
-
-  if (token) {
-    router.navigate({ to: "/users" });
-  }
-
+export function RegisterSubDomain() {
   return (
     <div
       className="grid grid-cols-1 bg-white md:flex md:grid-cols-2"
@@ -35,18 +35,18 @@ function Login() {
       <div
         style={{
           backgroundImage: `
-          linear-gradient(
-            to top left,
-           rgba(255, 255, 255, 0.50),
-            rgba(255, 255, 255, 0.7),
-            rgba(255, 255, 255, 0.8), 
-            rgba(255, 255, 255, 0.8), 
-            rgba(255, 255, 255, 0.8), 
-            rgba(255, 255, 255, 0.7),
-            rgba(255, 255, 255, 0.50)
-          ),
-          url(${cover})
-        `,
+      linear-gradient(
+        to top left,
+       rgba(255, 255, 255, 0.50),
+        rgba(255, 255, 255, 0.7),
+        rgba(255, 255, 255, 0.8), 
+        rgba(255, 255, 255, 0.8), 
+        rgba(255, 255, 255, 0.8), 
+        rgba(255, 255, 255, 0.7),
+        rgba(255, 255, 255, 0.50)
+      ),
+      url(${cover})
+    `,
         }}
         className="isolate grid h-[30vh] place-items-center bg-cover bg-center md:h-screen md:w-[60%]"
       >
@@ -54,10 +54,7 @@ function Login() {
       </div>
       <div className="flex h-[70vh] flex-col place-items-center bg-slate-100 p-8 md:h-screen md:w-[40%] md:pt-36">
         {/* <img alt="" src={logo} className="w-36" /> */}
-        <h1 className="mt-8 text-center text-2xl font-bold text-gray-900">
-          {/* Aqui terá uma chamada que faz uma busca dos dados do subdominio e retorna o nome e logo da oficina */}
-          Bem vindo ao painel {subdomain}
-        </h1>
+        <h1 className="mt-8 text-center text-2xl font-bold text-gray-900"></h1>
         <p className="text-center text-gray-700">
           Faça login ou cadastre uma conta para continuar
         </p>
@@ -65,7 +62,6 @@ function Login() {
         <div className="w-full">
           <Formik
             initialValues={{ email: "", password: "" }}
-            validationSchema={credentialsSchema}
             onSubmit={(values, { setSubmitting }) => {
               setTimeout(() => {
                 alert(JSON.stringify(values, null, 2));
