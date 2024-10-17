@@ -8,7 +8,7 @@ export const Route = createFileRoute("/_auth/users/")({
   component: Users,
 });
 function Users() {
-  const [params, setParams] = useState<baseRequestI>({ limit: 15, page: 1 });
+  const [params] = useState<baseRequestI>({ limit: 15, page: 1 });
   const { data } = useListUsers(params);
 
   return (
