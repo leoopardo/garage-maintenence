@@ -4,27 +4,36 @@ import { Formik } from "formik";
 import cover from "../../assets/capa.jpeg";
 import logo from "../../assets/logo1.svg";
 import { Input } from "../_components/Input";
+import { mixed, object, ref, string } from "yup";
+import { formatter } from "../../utils/formatter";
 
 export const Route = createFileRoute("/_register/registerSubdomain")({
   component: RegisterSubDomain,
 });
 
-// const credentialsSchema = object({
-//   email: string()
-//     .email("Deve ser um email válido.")
-//     .required("Email é obrigatório."),
-//   cellphone: string().required("Celular é obrigatório."),
-//   address: object({
-//     street: string().required("Rua é obrigatório."),
-//     number: string().required("Número é obrigatório."),
-//     neighborhood: string().required("Bairro é obrigatório."),
-//     city: string().required("Cidade é obrigatório."),
-//     state: string().required("Estado é obrigatório."),
-//     zip: string().required("CEP é obrigatório."),
-//   }),
-//   garage_name: string().required("Nome da oficina é obrigatório."),
-//   garage_phone: string().required("Telefone da oficina é obrigatório."),
-// });
+const plans = ["free-trial", "self-employed", "medium-garage", "big-garage"];
+const plansPrices = {
+  "self-employed": 19.99,
+  "medium-garage": 49.99,
+  "big-garage": 99.99,
+  "free-trial": 0,
+};
+
+const credentialsSchema = object({
+  subdomain: string().required("Subdomínio é obrigatório."),
+  garage_name: string().required("Nome da oficina é obrigatório."),
+  admin_name: string().required("Nome do administrador é obrigatório."),
+  username: string().required("Nome de usuário é obrigatório."),
+  email: string()
+    .email("Deve ser um email válido.")
+    .required("Email é obrigatório."),
+  admin_password: string().required("Senha é obrigatória."),
+  confirm_password: string().oneOf(
+    [ref("admin_password"), undefined],
+    "As senhas devem ser iguais.",
+  ),
+  plan: mixed().oneOf(plans),
+});
 
 export function RegisterSubDomain() {
   return (
@@ -52,16 +61,23 @@ export function RegisterSubDomain() {
       >
         <img alt="" src={logo} className="w-64" />
       </div>
-      <div className="flex h-[70vh] flex-col place-items-center bg-slate-100 p-8 md:h-screen md:w-[40%] md:pt-36">
-        {/* <img alt="" src={logo} className="w-36" /> */}
-        <h1 className="mt-8 text-center text-2xl font-bold text-gray-900"></h1>
-        <p className="text-center text-gray-700">
-          Faça login ou cadastre uma conta para continuar
-        </p>
+      <div className="mt-[-16px] flex h-[70vh] flex-col place-items-center bg-slate-100 p-8 md:h-screen md:w-[40%]">
+        <h1 className="mt-8 max-w-96 text-center text-xl font-bold text-gray-900">
+          Cadastre sua oficina e melhore seus processos agora mesmo.
+        </h1>
 
         <div className="w-full">
           <Formik
-            initialValues={{ email: "", password: "" }}
+            initialValues={{
+              subdomain: "",
+              garage_name: "",
+              admin_name: "",
+              email: "",
+              admin_password: "",
+              confirm_password: "",
+              plan: "free-trial",
+            }}
+            validationSchema={credentialsSchema}
             onSubmit={(values, { setSubmitting }) => {
               setTimeout(() => {
                 alert(JSON.stringify(values, null, 2));
@@ -77,29 +93,108 @@ export function RegisterSubDomain() {
               handleBlur,
               handleSubmit,
               isSubmitting,
-              /* and other goodies */
             }) => (
-              <form onSubmit={handleSubmit} className="flex flex-col gap-4 p-8">
-                <Input
-                  name="email"
-                  label="Email"
-                  type="email"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.email}
-                  errors={errors.email}
-                  touched={touched.email}
-                />
-                <Input
-                  name="password"
-                  label="Senha"
-                  type="password"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.password}
-                  errors={errors.password}
-                  touched={touched.password}
-                />{" "}
+              <form onSubmit={handleSubmit} className="flex flex-col gap-2 p-8">
+                <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
+                  <Input
+                    name="subdomain"
+                    label="Subdomínio"
+                    type="text"
+                    onChange={(e) => handleChange(e)}
+                    onBlur={handleBlur}
+                    value={values.subdomain}
+                    errors={errors.subdomain}
+                    touched={touched.subdomain}
+                  />
+                  <Input
+                    name="garage_name"
+                    label="Nome da oficina"
+                    type="text"
+                    onChange={(e) => handleChange(e)}
+                    onBlur={handleBlur}
+                    value={values.garage_name}
+                    errors={errors.garage_name}
+                    touched={touched.garage_name}
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
+                  <Input
+                    name="admin_name"
+                    label="Nome do administrador"
+                    type="text"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.admin_name}
+                    errors={errors.admin_name}
+                    touched={touched.admin_name}
+                  />
+                  <Input
+                    name="email"
+                    label="Email"
+                    type="email"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.email}
+                    errors={errors.email}
+                    touched={touched.email}
+                  />
+                  <Input
+                    name="admin_password"
+                    label="Senha do administrador"
+                    type="password"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.admin_password}
+                    errors={errors.admin_password}
+                    touched={touched.admin_password}
+                  />
+                  <Input
+                    name="confirm_password"
+                    label="Confirmar senha"
+                    type="password"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.confirm_password}
+                    errors={errors.confirm_password}
+                    touched={touched.confirm_password}
+                  />
+                </div>
+
+                {/* Botões de rádio em formato de card */}
+                <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
+                  {plans.map((plan) => (
+                    <label
+                      key={plan}
+                      className={`flex cursor-pointer flex-col rounded-md border p-4 text-center transition-all duration-500 ${
+                        values.plan === plan
+                          ? "border-orange-500 bg-orange-100"
+                          : "border-gray-300"
+                      }`}
+                    >
+                      <input
+                        type="radio"
+                        name="plan"
+                        value={plan}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        checked={values.plan === plan}
+                        className="hidden"
+                      />
+                      {plan === "free-trial" && "Teste Grátis"}
+                      {plan === "self-employed" && "Autônomo"}
+                      {plan === "medium-garage" && "Oficina Média"}
+                      {plan === "big-garage" && "Grande Oficina"}
+                      <div className="absolute ml-[-24px] mt-[-24px] rounded-lg bg-orange-300 p-1 text-xs">
+                        {formatter.currency((plansPrices as any)[plan])}
+                      </div>
+                    </label>
+                  ))}
+                </div>
+                {errors.plan && touched.plan && (
+                  <div className="text-red-500">{errors.plan}</div>
+                )}
+
                 <button
                   type="submit"
                   style={{ fontWeight: 300 }}
@@ -110,15 +205,6 @@ export function RegisterSubDomain() {
                 >
                   Entrar agora {isSubmitting && <LoadingOutlined />}
                 </button>
-                <span className="text-center text-gray-700">
-                  Ainda não tem uma conta?{" "}
-                  <a
-                    href="/register"
-                    className="text-orange-500 hover:text-orange-400"
-                  >
-                    Cadastre-se
-                  </a>
-                </span>
               </form>
             )}
           </Formik>
