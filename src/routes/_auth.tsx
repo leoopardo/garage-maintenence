@@ -2,7 +2,6 @@ import { AppSidebar, SidebarItems } from "@/components/app-sidebar";
 import {
   Breadcrumb,
   BreadcrumbItem,
-  BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
@@ -13,7 +12,13 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { api } from "@/config/api";
-import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
+import {
+  createFileRoute,
+  Link,
+  Outlet,
+  redirect,
+  useLocation,
+} from "@tanstack/react-router";
 import secureLocalStorage from "react-secure-storage";
 
 export const Route = createFileRoute("/_auth")({
@@ -26,6 +31,7 @@ export const Route = createFileRoute("/_auth")({
     }
   },
   component: () => {
+    const { pathname } = useLocation();
     const token = secureLocalStorage.getItem("token");
 
     if (token) {
@@ -42,7 +48,7 @@ export const Route = createFileRoute("/_auth")({
               <Separator orientation="vertical" className="mr-2 h-4" />
               <Breadcrumb>
                 <BreadcrumbList>
-                  {window.location.pathname.split("/").map((route) => {
+                  {pathname.split("/").map((route) => {
                     let i: any;
                     if (!route) {
                       return undefined;
@@ -55,7 +61,7 @@ export const Route = createFileRoute("/_auth")({
                     if (!i) {
                       SidebarItems.navMain.forEach((element) => {
                         element.items?.forEach((item) => {
-                          if (item.url === window.location.pathname) {
+                          if (item.url === pathname) {
                             i = item;
                           }
                         });
@@ -66,9 +72,7 @@ export const Route = createFileRoute("/_auth")({
                       <>
                         <BreadcrumbSeparator className="hidden md:block" />
                         <BreadcrumbItem className="hidden md:block">
-                          <BreadcrumbLink href={i.url}>
-                            {i.title}
-                          </BreadcrumbLink>
+                          <Link to={i.url}>{i.title}</Link>
                         </BreadcrumbItem>
                       </>
                     );
