@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 import { QueryClient } from "react-query";
 import secureLocalStorage from "react-secure-storage";
 
@@ -5,11 +6,15 @@ export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
+      retry: false,
       onError(err: any) {
         console.log(err);
         if (err?.status === 401) {
           secureLocalStorage.removeItem("token");
-          console.log("Token inválido, removendo token do localstorage");
+          setTimeout(() => {
+            window.location.href = "/login";
+          }, 2000);
+          toast.error("Sessão expirada, faça login novamente.");
         }
       },
     },

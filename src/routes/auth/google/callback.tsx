@@ -29,7 +29,7 @@ const GoogleCallback = () => {
           );
         })
         .finally(() => {
-          router.navigate({ to: "/users" });
+          router.navigate({ to: "/dashboard" });
           setLoading(false);
         });
     } else {

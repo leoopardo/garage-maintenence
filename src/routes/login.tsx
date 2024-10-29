@@ -1,10 +1,11 @@
 import { LoadingOutlined } from "@ant-design/icons";
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { Formik } from "formik";
+import secureLocalStorage from "react-secure-storage";
 import { object, string } from "yup";
 import cover from "../assets/capa.jpeg";
 import logo from "../assets/logo1.svg";
-import { useAuth } from "../contexts/useAuth";
+import { useLogin } from "../services/auth/login";
 import { Input } from "./_components/Input";
 
 export const Route = createFileRoute("/login")({
@@ -19,12 +20,13 @@ const credentialsSchema = object({
 });
 
 function Login() {
-  const { token } = useAuth();
+  const token = secureLocalStorage.getItem("token");
   const router = useRouter();
+  const { mutate } = useLogin();
   const subdomain = window.location.hostname.split(".")[0];
 
   if (token) {
-    router.navigate({ to: "/users" });
+    router.navigate({ to: "/dashboard" });
   }
 
   return (
@@ -67,10 +69,8 @@ function Login() {
             initialValues={{ email: "", password: "" }}
             validationSchema={credentialsSchema}
             onSubmit={(values, { setSubmitting }) => {
-              setTimeout(() => {
-                alert(JSON.stringify(values, null, 2));
-                setSubmitting(false);
-              }, 400);
+              mutate(values);
+              setSubmitting(false);
             }}
           >
             {({

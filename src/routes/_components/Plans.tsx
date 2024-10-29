@@ -10,7 +10,7 @@ const tiers = [
     name: "Mecânico autônomo",
     id: "small",
     href: "/register",
-    priceMonthly: "R$9,99",
+    priceMonthly: "R$29,99",
     description:
       "Perfeito para pequenos empreendedores, que trabalham sozinhos.",
     features: [

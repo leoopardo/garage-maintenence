@@ -3,14 +3,15 @@ import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 
 // Import the generated route tree
-import { QueryClientProvider } from "react-query";
 import { ConfigProvider } from "antd";
 import ptbr from "antd/locale/pt_BR";
+import { Toaster } from "react-hot-toast";
+import { QueryClientProvider } from "react-query";
+import { AuthProvider } from "./contexts/useAuth";
+import "./index.css";
 import { routeTree } from "./routeTree.gen";
 import { queryClient } from "./services/queryClient";
 import Dark from "./themes/dark";
-import "./index.css";
-import { AuthProvider } from "./contexts/useAuth";
 
 // Create a new router instance
 const router = createRouter({ routeTree });
@@ -31,10 +32,11 @@ if (!rootElement.innerHTML) {
       <ConfigProvider locale={ptbr} theme={Dark}>
         <QueryClientProvider client={queryClient}>
           <StrictMode>
+            <Toaster />
             <RouterProvider router={router} />
           </StrictMode>
         </QueryClientProvider>
       </ConfigProvider>
-    </AuthProvider>
+    </AuthProvider>,
   );
 }

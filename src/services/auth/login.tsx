@@ -3,6 +3,8 @@ import { api } from "../../config/api";
 import { useAuth } from "../../contexts/useAuth";
 import { useEffect } from "react";
 import secureLocalStorage from "react-secure-storage";
+import toast from "react-hot-toast";
+import { ToastError } from "@/components/toast.contents";
 
 interface credentialsI {
   email: string;
@@ -11,6 +13,7 @@ interface credentialsI {
 
 export const useLogin = () => {
   const { setToken } = useAuth();
+
   const mutation = useMutation<any | null | undefined, unknown, credentialsI>({
     mutationFn: async (body) => {
       const response = await api.post(`/auth/login`, body, {});
@@ -30,6 +33,14 @@ export const useLogin = () => {
   }, [mutation.isSuccess]);
 
   const { data, error, isLoading, mutate, reset, isSuccess } = mutation;
+
+  if (error) {
+    toast.custom(
+      (t) => <ToastError error={error} t={t} title="Erro ao realizar login" />,
+      { position: "top-left", duration: 5000 },
+    );
+    reset();
+  }
 
   return {
     data,
