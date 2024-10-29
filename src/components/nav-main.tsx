@@ -18,7 +18,7 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
-import { useLocation } from "@tanstack/react-router";
+import { Link, useLocation } from "@tanstack/react-router";
 
 export function NavMain({
   items,
@@ -53,13 +53,13 @@ export function NavMain({
                 tooltip={item.title}
                 className="transition-all duration-300 hover:bg-orange-400"
               >
-                <a
-                  href={item.url}
+                <Link
+                  to={item.url}
                   className={`${pathname === item.url ? "bg-orange-400" : ""} rounded-lg`}
                 >
                   <item.icon />
                   <span>{item.title}</span>
-                </a>
+                </Link>
               </SidebarMenuButton>
               {item.items?.length ? (
                 <>
@@ -80,9 +80,9 @@ export function NavMain({
                             asChild
                             className="transition-all duration-300 hover:bg-orange-300"
                           >
-                            <a href={subItem.url}>
+                            <Link to={subItem.url}>
                               <span>{subItem.title}</span>
-                            </a>
+                            </Link>
                           </SidebarMenuSubButton>
                         </SidebarMenuSubItem>
                       ))}

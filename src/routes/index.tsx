@@ -8,6 +8,7 @@ import Features from "./_components/Features";
 import { Input } from "./_components/Input";
 import { Modal } from "./_components/Modal";
 import { Plans } from "./_components/Plans";
+import { Link } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   component: Example,
@@ -69,10 +70,10 @@ export default function Example() {
           className="flex items-center justify-between p-6 lg:px-8"
         >
           <div className="flex lg:flex-1">
-            <a href="#" className="-m-1.5 p-1.5">
+            <Link to="#" className="-m-1.5 p-1.5">
               <span className="sr-only">garage</span>
               <img alt="" src={logo} className="h-8 w-auto" />
-            </a>
+            </Link>
           </div>
           <div className="flex lg:hidden">
             <button
@@ -86,14 +87,14 @@ export default function Example() {
           </div>
           <div className="hidden lg:flex lg:gap-x-12">
             {navigation.map((item) => (
-              <a
+              <Link
                 key={item.name}
-                href={item.href}
+                to={item.href}
                 onClick={(e) => handleSmoothScroll(e, item.href.slice(1))}
                 className="text-sm font-semibold leading-6 text-gray-900 hover:text-orange-500"
               >
                 {item.name}
-              </a>
+              </Link>
             ))}
           </div>
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
@@ -113,10 +114,10 @@ export default function Example() {
           <div className="fixed inset-0 z-50" />
           <DialogPanel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
             <div className="flex items-center justify-between">
-              <a href="#" className="-m-1.5 p-1.5">
+              <Link to="#" className="-m-1.5 p-1.5">
                 <span className="sr-only">garage</span>
                 <img alt="" src={logo} className="h-8 w-auto" />
-              </a>
+              </Link>
               <button
                 type="button"
                 onClick={() => setMobileMenuOpen(false)}
@@ -283,7 +284,7 @@ export default function Example() {
             <a>Termos e condições</a>
             <a>Política de privacidade</a>
             {navigation.map((item) => (
-              <a href={item.href}>{item.name}</a>
+              <Link to={item.href}>{item.name}</Link>
             ))}
           </div>
           <div className="mx-auto flex flex-col items-start justify-start px-6 lg:px-8">

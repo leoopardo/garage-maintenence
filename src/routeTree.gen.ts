@@ -23,8 +23,15 @@ import { Route as ComponentsPlansImport } from './routes/_components/Plans'
 import { Route as ComponentsModalImport } from './routes/_components/Modal'
 import { Route as ComponentsInputImport } from './routes/_components/Input'
 import { Route as ComponentsFeaturesImport } from './routes/_components/Features'
+import { Route as AuthVehiclesIndexImport } from './routes/_auth/vehicles/index'
+import { Route as AuthServicesIndexImport } from './routes/_auth/services/index'
+import { Route as AuthMechanicalsIndexImport } from './routes/_auth/mechanicals/index'
 import { Route as AuthDashboardIndexImport } from './routes/_auth/dashboard/index'
+import { Route as AuthClientsIndexImport } from './routes/_auth/clients/index'
 import { Route as AuthGoogleCallbackImport } from './routes/auth/google/callback'
+import { Route as AuthServicesQuotesIndexImport } from './routes/_auth/services/quotes/index'
+import { Route as AuthServicesOngoingIndexImport } from './routes/_auth/services/ongoing/index'
+import { Route as AuthServicesHistoryIndexImport } from './routes/_auth/services/history/index'
 import { Route as AuthDashboardReportsServicesIndexImport } from './routes/_auth/dashboard/reports-services/index'
 import { Route as AuthDashboardReportsOperationIndexImport } from './routes/_auth/dashboard/reports-operation/index'
 import { Route as AuthDashboardReportsMechanicalsIndexImport } from './routes/_auth/dashboard/reports-mechanicals/index'
@@ -90,14 +97,49 @@ const ComponentsFeaturesRoute = ComponentsFeaturesImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const AuthVehiclesIndexRoute = AuthVehiclesIndexImport.update({
+  path: '/vehicles/',
+  getParentRoute: () => AuthRoute,
+} as any)
+
+const AuthServicesIndexRoute = AuthServicesIndexImport.update({
+  path: '/services/',
+  getParentRoute: () => AuthRoute,
+} as any)
+
+const AuthMechanicalsIndexRoute = AuthMechanicalsIndexImport.update({
+  path: '/mechanicals/',
+  getParentRoute: () => AuthRoute,
+} as any)
+
 const AuthDashboardIndexRoute = AuthDashboardIndexImport.update({
   path: '/dashboard/',
+  getParentRoute: () => AuthRoute,
+} as any)
+
+const AuthClientsIndexRoute = AuthClientsIndexImport.update({
+  path: '/clients/',
   getParentRoute: () => AuthRoute,
 } as any)
 
 const AuthGoogleCallbackRoute = AuthGoogleCallbackImport.update({
   path: '/auth/google/callback',
   getParentRoute: () => rootRoute,
+} as any)
+
+const AuthServicesQuotesIndexRoute = AuthServicesQuotesIndexImport.update({
+  path: '/services/quotes/',
+  getParentRoute: () => AuthRoute,
+} as any)
+
+const AuthServicesOngoingIndexRoute = AuthServicesOngoingIndexImport.update({
+  path: '/services/ongoing/',
+  getParentRoute: () => AuthRoute,
+} as any)
+
+const AuthServicesHistoryIndexRoute = AuthServicesHistoryIndexImport.update({
+  path: '/services/history/',
+  getParentRoute: () => AuthRoute,
 } as any)
 
 const AuthDashboardReportsServicesIndexRoute =
@@ -206,11 +248,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthGoogleCallbackImport
       parentRoute: typeof rootRoute
     }
+    '/_auth/clients/': {
+      id: '/_auth/clients/'
+      path: '/clients'
+      fullPath: '/clients'
+      preLoaderRoute: typeof AuthClientsIndexImport
+      parentRoute: typeof AuthImport
+    }
     '/_auth/dashboard/': {
       id: '/_auth/dashboard/'
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof AuthDashboardIndexImport
+      parentRoute: typeof AuthImport
+    }
+    '/_auth/mechanicals/': {
+      id: '/_auth/mechanicals/'
+      path: '/mechanicals'
+      fullPath: '/mechanicals'
+      preLoaderRoute: typeof AuthMechanicalsIndexImport
+      parentRoute: typeof AuthImport
+    }
+    '/_auth/services/': {
+      id: '/_auth/services/'
+      path: '/services'
+      fullPath: '/services'
+      preLoaderRoute: typeof AuthServicesIndexImport
+      parentRoute: typeof AuthImport
+    }
+    '/_auth/vehicles/': {
+      id: '/_auth/vehicles/'
+      path: '/vehicles'
+      fullPath: '/vehicles'
+      preLoaderRoute: typeof AuthVehiclesIndexImport
       parentRoute: typeof AuthImport
     }
     '/_auth/dashboard/reports-mechanicals/': {
@@ -234,26 +304,61 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthDashboardReportsServicesIndexImport
       parentRoute: typeof AuthImport
     }
+    '/_auth/services/history/': {
+      id: '/_auth/services/history/'
+      path: '/services/history'
+      fullPath: '/services/history'
+      preLoaderRoute: typeof AuthServicesHistoryIndexImport
+      parentRoute: typeof AuthImport
+    }
+    '/_auth/services/ongoing/': {
+      id: '/_auth/services/ongoing/'
+      path: '/services/ongoing'
+      fullPath: '/services/ongoing'
+      preLoaderRoute: typeof AuthServicesOngoingIndexImport
+      parentRoute: typeof AuthImport
+    }
+    '/_auth/services/quotes/': {
+      id: '/_auth/services/quotes/'
+      path: '/services/quotes'
+      fullPath: '/services/quotes'
+      preLoaderRoute: typeof AuthServicesQuotesIndexImport
+      parentRoute: typeof AuthImport
+    }
   }
 }
 
 // Create and export the route tree
 
 interface AuthRouteChildren {
+  AuthClientsIndexRoute: typeof AuthClientsIndexRoute
   AuthDashboardIndexRoute: typeof AuthDashboardIndexRoute
+  AuthMechanicalsIndexRoute: typeof AuthMechanicalsIndexRoute
+  AuthServicesIndexRoute: typeof AuthServicesIndexRoute
+  AuthVehiclesIndexRoute: typeof AuthVehiclesIndexRoute
   AuthDashboardReportsMechanicalsIndexRoute: typeof AuthDashboardReportsMechanicalsIndexRoute
   AuthDashboardReportsOperationIndexRoute: typeof AuthDashboardReportsOperationIndexRoute
   AuthDashboardReportsServicesIndexRoute: typeof AuthDashboardReportsServicesIndexRoute
+  AuthServicesHistoryIndexRoute: typeof AuthServicesHistoryIndexRoute
+  AuthServicesOngoingIndexRoute: typeof AuthServicesOngoingIndexRoute
+  AuthServicesQuotesIndexRoute: typeof AuthServicesQuotesIndexRoute
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
+  AuthClientsIndexRoute: AuthClientsIndexRoute,
   AuthDashboardIndexRoute: AuthDashboardIndexRoute,
+  AuthMechanicalsIndexRoute: AuthMechanicalsIndexRoute,
+  AuthServicesIndexRoute: AuthServicesIndexRoute,
+  AuthVehiclesIndexRoute: AuthVehiclesIndexRoute,
   AuthDashboardReportsMechanicalsIndexRoute:
     AuthDashboardReportsMechanicalsIndexRoute,
   AuthDashboardReportsOperationIndexRoute:
     AuthDashboardReportsOperationIndexRoute,
   AuthDashboardReportsServicesIndexRoute:
     AuthDashboardReportsServicesIndexRoute,
+  AuthServicesHistoryIndexRoute: AuthServicesHistoryIndexRoute,
+  AuthServicesOngoingIndexRoute: AuthServicesOngoingIndexRoute,
+  AuthServicesQuotesIndexRoute: AuthServicesQuotesIndexRoute,
 }
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
@@ -271,10 +376,17 @@ export interface FileRoutesByFullPath {
   '/registerAccount': typeof RegisterRegisterAccountRoute
   '/registerSubdomain': typeof RegisterRegisterSubdomainRoute
   '/auth/google/callback': typeof AuthGoogleCallbackRoute
+  '/clients': typeof AuthClientsIndexRoute
   '/dashboard': typeof AuthDashboardIndexRoute
+  '/mechanicals': typeof AuthMechanicalsIndexRoute
+  '/services': typeof AuthServicesIndexRoute
+  '/vehicles': typeof AuthVehiclesIndexRoute
   '/dashboard/reports-mechanicals': typeof AuthDashboardReportsMechanicalsIndexRoute
   '/dashboard/reports-operation': typeof AuthDashboardReportsOperationIndexRoute
   '/dashboard/reports-services': typeof AuthDashboardReportsServicesIndexRoute
+  '/services/history': typeof AuthServicesHistoryIndexRoute
+  '/services/ongoing': typeof AuthServicesOngoingIndexRoute
+  '/services/quotes': typeof AuthServicesQuotesIndexRoute
 }
 
 export interface FileRoutesByTo {
@@ -290,10 +402,17 @@ export interface FileRoutesByTo {
   '/registerAccount': typeof RegisterRegisterAccountRoute
   '/registerSubdomain': typeof RegisterRegisterSubdomainRoute
   '/auth/google/callback': typeof AuthGoogleCallbackRoute
+  '/clients': typeof AuthClientsIndexRoute
   '/dashboard': typeof AuthDashboardIndexRoute
+  '/mechanicals': typeof AuthMechanicalsIndexRoute
+  '/services': typeof AuthServicesIndexRoute
+  '/vehicles': typeof AuthVehiclesIndexRoute
   '/dashboard/reports-mechanicals': typeof AuthDashboardReportsMechanicalsIndexRoute
   '/dashboard/reports-operation': typeof AuthDashboardReportsOperationIndexRoute
   '/dashboard/reports-services': typeof AuthDashboardReportsServicesIndexRoute
+  '/services/history': typeof AuthServicesHistoryIndexRoute
+  '/services/ongoing': typeof AuthServicesOngoingIndexRoute
+  '/services/quotes': typeof AuthServicesQuotesIndexRoute
 }
 
 export interface FileRoutesById {
@@ -310,10 +429,17 @@ export interface FileRoutesById {
   '/_register/registerAccount': typeof RegisterRegisterAccountRoute
   '/_register/registerSubdomain': typeof RegisterRegisterSubdomainRoute
   '/auth/google/callback': typeof AuthGoogleCallbackRoute
+  '/_auth/clients/': typeof AuthClientsIndexRoute
   '/_auth/dashboard/': typeof AuthDashboardIndexRoute
+  '/_auth/mechanicals/': typeof AuthMechanicalsIndexRoute
+  '/_auth/services/': typeof AuthServicesIndexRoute
+  '/_auth/vehicles/': typeof AuthVehiclesIndexRoute
   '/_auth/dashboard/reports-mechanicals/': typeof AuthDashboardReportsMechanicalsIndexRoute
   '/_auth/dashboard/reports-operation/': typeof AuthDashboardReportsOperationIndexRoute
   '/_auth/dashboard/reports-services/': typeof AuthDashboardReportsServicesIndexRoute
+  '/_auth/services/history/': typeof AuthServicesHistoryIndexRoute
+  '/_auth/services/ongoing/': typeof AuthServicesOngoingIndexRoute
+  '/_auth/services/quotes/': typeof AuthServicesQuotesIndexRoute
 }
 
 export interface FileRouteTypes {
@@ -331,10 +457,17 @@ export interface FileRouteTypes {
     | '/registerAccount'
     | '/registerSubdomain'
     | '/auth/google/callback'
+    | '/clients'
     | '/dashboard'
+    | '/mechanicals'
+    | '/services'
+    | '/vehicles'
     | '/dashboard/reports-mechanicals'
     | '/dashboard/reports-operation'
     | '/dashboard/reports-services'
+    | '/services/history'
+    | '/services/ongoing'
+    | '/services/quotes'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -349,10 +482,17 @@ export interface FileRouteTypes {
     | '/registerAccount'
     | '/registerSubdomain'
     | '/auth/google/callback'
+    | '/clients'
     | '/dashboard'
+    | '/mechanicals'
+    | '/services'
+    | '/vehicles'
     | '/dashboard/reports-mechanicals'
     | '/dashboard/reports-operation'
     | '/dashboard/reports-services'
+    | '/services/history'
+    | '/services/ongoing'
+    | '/services/quotes'
   id:
     | '__root__'
     | '/'
@@ -367,10 +507,17 @@ export interface FileRouteTypes {
     | '/_register/registerAccount'
     | '/_register/registerSubdomain'
     | '/auth/google/callback'
+    | '/_auth/clients/'
     | '/_auth/dashboard/'
+    | '/_auth/mechanicals/'
+    | '/_auth/services/'
+    | '/_auth/vehicles/'
     | '/_auth/dashboard/reports-mechanicals/'
     | '/_auth/dashboard/reports-operation/'
     | '/_auth/dashboard/reports-services/'
+    | '/_auth/services/history/'
+    | '/_auth/services/ongoing/'
+    | '/_auth/services/quotes/'
   fileRoutesById: FileRoutesById
 }
 
@@ -436,10 +583,17 @@ export const routeTree = rootRoute
     "/_auth": {
       "filePath": "_auth.tsx",
       "children": [
+        "/_auth/clients/",
         "/_auth/dashboard/",
+        "/_auth/mechanicals/",
+        "/_auth/services/",
+        "/_auth/vehicles/",
         "/_auth/dashboard/reports-mechanicals/",
         "/_auth/dashboard/reports-operation/",
-        "/_auth/dashboard/reports-services/"
+        "/_auth/dashboard/reports-services/",
+        "/_auth/services/history/",
+        "/_auth/services/ongoing/",
+        "/_auth/services/quotes/"
       ]
     },
     "/login": {
@@ -472,8 +626,24 @@ export const routeTree = rootRoute
     "/auth/google/callback": {
       "filePath": "auth/google/callback.tsx"
     },
+    "/_auth/clients/": {
+      "filePath": "_auth/clients/index.tsx",
+      "parent": "/_auth"
+    },
     "/_auth/dashboard/": {
       "filePath": "_auth/dashboard/index.tsx",
+      "parent": "/_auth"
+    },
+    "/_auth/mechanicals/": {
+      "filePath": "_auth/mechanicals/index.tsx",
+      "parent": "/_auth"
+    },
+    "/_auth/services/": {
+      "filePath": "_auth/services/index.tsx",
+      "parent": "/_auth"
+    },
+    "/_auth/vehicles/": {
+      "filePath": "_auth/vehicles/index.tsx",
       "parent": "/_auth"
     },
     "/_auth/dashboard/reports-mechanicals/": {
@@ -486,6 +656,18 @@ export const routeTree = rootRoute
     },
     "/_auth/dashboard/reports-services/": {
       "filePath": "_auth/dashboard/reports-services/index.tsx",
+      "parent": "/_auth"
+    },
+    "/_auth/services/history/": {
+      "filePath": "_auth/services/history/index.tsx",
+      "parent": "/_auth"
+    },
+    "/_auth/services/ongoing/": {
+      "filePath": "_auth/services/ongoing/index.tsx",
+      "parent": "/_auth"
+    },
+    "/_auth/services/quotes/": {
+      "filePath": "_auth/services/quotes/index.tsx",
       "parent": "/_auth"
     }
   }

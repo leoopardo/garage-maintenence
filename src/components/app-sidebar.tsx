@@ -1,11 +1,4 @@
-import {
-  BookOpen,
-  Bot,
-  Command,
-  LifeBuoy,
-  Send,
-  Settings2,
-} from "lucide-react";
+import { CarIcon, LifeBuoy, Send } from "lucide-react";
 import * as React from "react";
 
 import { NavMain } from "@/components/nav-main";
@@ -20,8 +13,15 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { DashboardOutlined } from "@ant-design/icons";
+import { useGetMe } from "@/services/auth/getMe";
 import { useGetConfig } from "@/services/subdomain/getConfigs";
+import { DashboardOutlined } from "@ant-design/icons";
+import {
+  NewspaperIcon,
+  UserCircleIcon,
+  UsersIcon,
+  WrenchIcon,
+} from "@heroicons/react/24/outline";
 
 export const SidebarItems = {
   user: {
@@ -52,7 +52,7 @@ export const SidebarItems = {
     {
       title: "Serviços",
       url: "/services",
-      icon: Bot,
+      icon: NewspaperIcon,
       items: [
         {
           title: "Em andamento",
@@ -71,7 +71,7 @@ export const SidebarItems = {
     {
       title: "Mecânicos",
       url: "/mechanicals",
-      icon: BookOpen,
+      icon: WrenchIcon,
       // items: [
       //   {
       //     title: "Introduction",
@@ -94,12 +94,12 @@ export const SidebarItems = {
     {
       title: "Clientes",
       url: "/clients",
-      icon: Settings2,
+      icon: UsersIcon,
     },
     {
       title: "Veículos",
       url: "/vehicles",
-      icon: Settings2,
+      icon: CarIcon,
     },
   ],
   navSecondary: [
@@ -135,6 +135,7 @@ export const SidebarItems = {
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { data } = useGetConfig();
+  const Me = useGetMe();
   return (
     <Sidebar
       variant="inset"
@@ -146,8 +147,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
               <a href="#">
-                <div className="text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg bg-orange-500">
-                  <Command className="size-4" />
+                <div className="text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg bg-zinc-900">
+                  <img src="/logo.svg" alt="garage-logo" className="w-[85%]" />
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-semibold">
@@ -166,7 +167,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavSecondary items={SidebarItems.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter className="bg-neutral-100">
-        <NavUser user={SidebarItems.user} />
+        <NavUser
+          user={{
+            avatar: <UserCircleIcon width={24} />,
+            email: Me?.data?.email,
+            name: Me?.data?.name,
+          }}
+        />
       </SidebarFooter>
     </Sidebar>
   );
