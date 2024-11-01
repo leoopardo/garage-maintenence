@@ -3,7 +3,17 @@ import { api } from "../../config/api";
 import { baseRequestI } from "../__interfaces/baseRequest.interface";
 import { baseResponseI } from "../__interfaces/baseResponse.interface";
 
-export interface MechanicalI {}
+export interface MechanicalI {
+  _id: string;
+  firstname: string;
+  lastname: string;
+  cellphone: string;
+  servicesHistory: any[];
+  profilePicture?: string;
+  profileColor: string;
+  createdAt: string;
+  updatedAt: string;
+}
 
 export const useListMechanicals = (params: baseRequestI) => {
   const { data, error, isLoading, refetch } = useQuery<

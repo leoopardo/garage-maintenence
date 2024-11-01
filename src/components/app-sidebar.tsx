@@ -72,24 +72,6 @@ export const SidebarItems = {
       title: "Mecânicos",
       url: "/mechanicals",
       icon: WrenchIcon,
-      // items: [
-      //   {
-      //     title: "Introduction",
-      //     url: "",
-      //   },
-      //   {
-      //     title: "Get Started",
-      //     url: "#",
-      //   },
-      //   {
-      //     title: "Tutorials",
-      //     url: "#",
-      //   },
-      //   {
-      //     title: "Changelog",
-      //     url: "#",
-      //   },
-      // ],
     },
     {
       title: "Clientes",
@@ -114,35 +96,14 @@ export const SidebarItems = {
       icon: Send,
     },
   ],
-  // projects: [
-  //   {
-  //     name: "Design Engineering",
-  //     url: "#",
-  //     icon: Frame,
-  //   },
-  //   {
-  //     name: "Sales & Marketing",
-  //     url: "#",
-  //     icon: PieChart,
-  //   },
-  //   {
-  //     name: "Travel",
-  //     url: "#",
-  //     icon: Map,
-  //   },
-  // ],
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { data } = useGetConfig();
   const Me = useGetMe();
   return (
-    <Sidebar
-      variant="inset"
-      style={{ backgroundColor: "rgb(245 245 245)" }}
-      {...props}
-    >
-      <SidebarHeader className="bg-neutral-100">
+    <Sidebar variant="inset" style={{ backgroundColor: "#f0f0f0" }} {...props}>
+      <SidebarHeader className="bg-[#f0f0f0]">
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
@@ -161,12 +122,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
-      <SidebarContent className="bg-neutral-100">
+      <SidebarContent className="bg-[#f0f0f0]">
         <NavMain items={SidebarItems.navMain} />
         {/* <NavProjects projects={data.projects} /> */}
         <NavSecondary items={SidebarItems.navSecondary} className="mt-auto" />
       </SidebarContent>
-      <SidebarFooter className="bg-neutral-100">
+      <SidebarFooter className="bg-[#f0f0f0]">
         <NavUser
           user={{
             avatar: <UserCircleIcon width={24} />,

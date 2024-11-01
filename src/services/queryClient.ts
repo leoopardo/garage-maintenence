@@ -7,6 +7,7 @@ export const queryClient = new QueryClient({
     queries: {
       refetchOnWindowFocus: false,
       retry: false,
+      keepPreviousData: true,
       onError(err: any) {
         console.log(err);
         if (err?.status === 401) {

@@ -35,6 +35,7 @@ import { Route as AuthServicesHistoryIndexImport } from './routes/_auth/services
 import { Route as AuthDashboardReportsServicesIndexImport } from './routes/_auth/dashboard/reports-services/index'
 import { Route as AuthDashboardReportsOperationIndexImport } from './routes/_auth/dashboard/reports-operation/index'
 import { Route as AuthDashboardReportsMechanicalsIndexImport } from './routes/_auth/dashboard/reports-mechanicals/index'
+import { Route as AuthMechanicalsComponentsCreateImport } from './routes/_auth/mechanicals/_components/create'
 
 // Create Virtual Routes
 
@@ -157,6 +158,12 @@ const AuthDashboardReportsOperationIndexRoute =
 const AuthDashboardReportsMechanicalsIndexRoute =
   AuthDashboardReportsMechanicalsIndexImport.update({
     path: '/dashboard/reports-mechanicals/',
+    getParentRoute: () => AuthRoute,
+  } as any)
+
+const AuthMechanicalsComponentsCreateRoute =
+  AuthMechanicalsComponentsCreateImport.update({
+    path: '/mechanicals/create',
     getParentRoute: () => AuthRoute,
   } as any)
 
@@ -283,6 +290,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthVehiclesIndexImport
       parentRoute: typeof AuthImport
     }
+    '/_auth/mechanicals/_components/create': {
+      id: '/_auth/mechanicals/_components/create'
+      path: '/mechanicals/create'
+      fullPath: '/mechanicals/create'
+      preLoaderRoute: typeof AuthMechanicalsComponentsCreateImport
+      parentRoute: typeof AuthImport
+    }
     '/_auth/dashboard/reports-mechanicals/': {
       id: '/_auth/dashboard/reports-mechanicals/'
       path: '/dashboard/reports-mechanicals'
@@ -336,6 +350,7 @@ interface AuthRouteChildren {
   AuthMechanicalsIndexRoute: typeof AuthMechanicalsIndexRoute
   AuthServicesIndexRoute: typeof AuthServicesIndexRoute
   AuthVehiclesIndexRoute: typeof AuthVehiclesIndexRoute
+  AuthMechanicalsComponentsCreateRoute: typeof AuthMechanicalsComponentsCreateRoute
   AuthDashboardReportsMechanicalsIndexRoute: typeof AuthDashboardReportsMechanicalsIndexRoute
   AuthDashboardReportsOperationIndexRoute: typeof AuthDashboardReportsOperationIndexRoute
   AuthDashboardReportsServicesIndexRoute: typeof AuthDashboardReportsServicesIndexRoute
@@ -350,6 +365,7 @@ const AuthRouteChildren: AuthRouteChildren = {
   AuthMechanicalsIndexRoute: AuthMechanicalsIndexRoute,
   AuthServicesIndexRoute: AuthServicesIndexRoute,
   AuthVehiclesIndexRoute: AuthVehiclesIndexRoute,
+  AuthMechanicalsComponentsCreateRoute: AuthMechanicalsComponentsCreateRoute,
   AuthDashboardReportsMechanicalsIndexRoute:
     AuthDashboardReportsMechanicalsIndexRoute,
   AuthDashboardReportsOperationIndexRoute:
@@ -381,6 +397,7 @@ export interface FileRoutesByFullPath {
   '/mechanicals': typeof AuthMechanicalsIndexRoute
   '/services': typeof AuthServicesIndexRoute
   '/vehicles': typeof AuthVehiclesIndexRoute
+  '/mechanicals/create': typeof AuthMechanicalsComponentsCreateRoute
   '/dashboard/reports-mechanicals': typeof AuthDashboardReportsMechanicalsIndexRoute
   '/dashboard/reports-operation': typeof AuthDashboardReportsOperationIndexRoute
   '/dashboard/reports-services': typeof AuthDashboardReportsServicesIndexRoute
@@ -407,6 +424,7 @@ export interface FileRoutesByTo {
   '/mechanicals': typeof AuthMechanicalsIndexRoute
   '/services': typeof AuthServicesIndexRoute
   '/vehicles': typeof AuthVehiclesIndexRoute
+  '/mechanicals/create': typeof AuthMechanicalsComponentsCreateRoute
   '/dashboard/reports-mechanicals': typeof AuthDashboardReportsMechanicalsIndexRoute
   '/dashboard/reports-operation': typeof AuthDashboardReportsOperationIndexRoute
   '/dashboard/reports-services': typeof AuthDashboardReportsServicesIndexRoute
@@ -434,6 +452,7 @@ export interface FileRoutesById {
   '/_auth/mechanicals/': typeof AuthMechanicalsIndexRoute
   '/_auth/services/': typeof AuthServicesIndexRoute
   '/_auth/vehicles/': typeof AuthVehiclesIndexRoute
+  '/_auth/mechanicals/_components/create': typeof AuthMechanicalsComponentsCreateRoute
   '/_auth/dashboard/reports-mechanicals/': typeof AuthDashboardReportsMechanicalsIndexRoute
   '/_auth/dashboard/reports-operation/': typeof AuthDashboardReportsOperationIndexRoute
   '/_auth/dashboard/reports-services/': typeof AuthDashboardReportsServicesIndexRoute
@@ -462,6 +481,7 @@ export interface FileRouteTypes {
     | '/mechanicals'
     | '/services'
     | '/vehicles'
+    | '/mechanicals/create'
     | '/dashboard/reports-mechanicals'
     | '/dashboard/reports-operation'
     | '/dashboard/reports-services'
@@ -487,6 +507,7 @@ export interface FileRouteTypes {
     | '/mechanicals'
     | '/services'
     | '/vehicles'
+    | '/mechanicals/create'
     | '/dashboard/reports-mechanicals'
     | '/dashboard/reports-operation'
     | '/dashboard/reports-services'
@@ -512,6 +533,7 @@ export interface FileRouteTypes {
     | '/_auth/mechanicals/'
     | '/_auth/services/'
     | '/_auth/vehicles/'
+    | '/_auth/mechanicals/_components/create'
     | '/_auth/dashboard/reports-mechanicals/'
     | '/_auth/dashboard/reports-operation/'
     | '/_auth/dashboard/reports-services/'
@@ -588,6 +610,7 @@ export const routeTree = rootRoute
         "/_auth/mechanicals/",
         "/_auth/services/",
         "/_auth/vehicles/",
+        "/_auth/mechanicals/_components/create",
         "/_auth/dashboard/reports-mechanicals/",
         "/_auth/dashboard/reports-operation/",
         "/_auth/dashboard/reports-services/",
@@ -644,6 +667,10 @@ export const routeTree = rootRoute
     },
     "/_auth/vehicles/": {
       "filePath": "_auth/vehicles/index.tsx",
+      "parent": "/_auth"
+    },
+    "/_auth/mechanicals/_components/create": {
+      "filePath": "_auth/mechanicals/_components/create.tsx",
       "parent": "/_auth"
     },
     "/_auth/dashboard/reports-mechanicals/": {
