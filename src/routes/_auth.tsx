@@ -12,6 +12,7 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { api } from "@/config/api";
+import { useIsMobile } from "@/hooks/use-mobile";
 import {
   createFileRoute,
   Link,
@@ -33,13 +34,14 @@ export const Route = createFileRoute("/_auth")({
   component: () => {
     const { pathname } = useLocation();
     const token = secureLocalStorage.getItem("token");
+    const isMobile = useIsMobile();
 
     if (token) {
       api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     }
 
     return (
-      <SidebarProvider className="w-[100vw]">
+      <SidebarProvider className={isMobile ? "w-[98vw]" : "w-[100vw]"}>
         <AppSidebar />
         <SidebarInset className="w-full">
           <header className="z-50 flex h-16 w-1/2 shrink-0 items-center gap-2">

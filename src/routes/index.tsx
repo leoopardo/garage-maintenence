@@ -70,10 +70,10 @@ export default function Example() {
           className="flex items-center justify-between p-6 lg:px-8"
         >
           <div className="flex lg:flex-1">
-            <Link to="#" className="-m-1.5 p-1.5">
+            <a href="#" className="-m-1.5 p-1.5">
               <span className="sr-only">garage</span>
               <img alt="" src={logo} className="h-8 w-auto" />
-            </Link>
+            </a>
           </div>
           <div className="flex lg:hidden">
             <button
@@ -87,14 +87,14 @@ export default function Example() {
           </div>
           <div className="hidden lg:flex lg:gap-x-12">
             {navigation.map((item) => (
-              <Link
+              <a
                 key={item.name}
-                to={item.href}
+                href={item.href}
                 onClick={(e) => handleSmoothScroll(e, item.href.slice(1))}
                 className="text-sm font-semibold leading-6 text-gray-900 hover:text-orange-500"
               >
                 {item.name}
-              </Link>
+              </a>
             ))}
           </div>
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
@@ -284,7 +284,7 @@ export default function Example() {
             <a>Termos e condições</a>
             <a>Política de privacidade</a>
             {navigation.map((item) => (
-              <Link to={item.href}>{item.name}</Link>
+              <a href={item.href}>{item.name}</a>
             ))}
           </div>
           <div className="mx-auto flex flex-col items-start justify-start px-6 lg:px-8">

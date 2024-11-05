@@ -17,6 +17,7 @@ import { useGetMe } from "@/services/auth/getMe";
 import { useGetConfig } from "@/services/subdomain/getConfigs";
 import { DashboardOutlined } from "@ant-design/icons";
 import {
+  FolderOpenIcon,
   NewspaperIcon,
   UserCircleIcon,
   UsersIcon,
@@ -66,6 +67,10 @@ export const SidebarItems = {
           title: "Orçamentos",
           url: "/services/quotes",
         },
+        {
+          title: "Tipos de serviço",
+          url: "/services/types",
+        },
       ],
     },
     {
@@ -77,11 +82,12 @@ export const SidebarItems = {
       title: "Clientes",
       url: "/clients",
       icon: UsersIcon,
+      items: [{ title: "Veículos", url: "/clients/vehicles", icon: CarIcon }],
     },
     {
-      title: "Veículos",
-      url: "/vehicles",
-      icon: CarIcon,
+      title: "Estoque",
+      url: "/stock",
+      icon: FolderOpenIcon,
     },
   ],
   navSecondary: [
@@ -108,7 +114,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
               <a href="#">
-                <div className="text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg bg-zinc-900">
+                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-zinc-900 text-sidebar-primary-foreground">
                   <img src="/logo.svg" alt="garage-logo" className="w-[85%]" />
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
