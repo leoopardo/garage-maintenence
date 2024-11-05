@@ -1,14 +1,15 @@
 import { Dialog, DialogPanel } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
-import cover from "../assets/capa.jpeg";
+import { useEffect, useRef, useState } from "react";
+import cover from "../assets/capa.webp";
 import logo from "../assets/logo2.svg";
 import Features from "./_components/Features";
 import { Input } from "./_components/Input";
 import { Modal } from "./_components/Modal";
 import { Plans } from "./_components/Plans";
 import { Link } from "lucide-react";
+import { useInView, motion } from "framer-motion";
 
 export const Route = createFileRoute("/")({
   component: Example,
@@ -26,8 +27,12 @@ export default function Example() {
   const [isSticky, setIsSticky] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [subdomain, setSubdomain] = useState<string>("");
+  const divRef = useRef(null);
+  const isInView = useInView(divRef);
   const [isSubdomainModalOpen, setIsSubdomainModalOpen] =
     useState<boolean>(false);
+
+  console.log(isInView);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -155,22 +160,32 @@ export default function Example() {
         </Dialog>
       </header>
 
-      <div
+      <motion.div
+        ref={divRef}
         className="relative isolate bg-cover bg-center px-6 pb-8 pt-14 lg:px-8"
         style={{
-          backgroundImage: `
-          linear-gradient(
-            to top left,
-            rgba(255, 255, 255, 0.60),
-            rgba(255, 255, 255, 0.8),
-            rgba(255, 255, 255, 0.9), 
-            rgba(255, 255, 255, 0.9), 
-            rgba(255, 255, 255, 0.9), 
-            rgba(255, 255, 255, 0.8),
-            rgba(255, 255, 255, 0.60)
-          ),
-          url(${cover})
-        `,
+          backgroundImage: isInView
+            ? `
+        linear-gradient(
+          to top left,
+          rgba(255, 255, 255, 0.60),
+          rgba(255, 255, 255, 0.8),
+          rgba(255, 255, 255, 0.9), 
+          rgba(255, 255, 255, 0.9), 
+          rgba(255, 255, 255, 0.9), 
+          rgba(255, 255, 255, 0.8),
+          rgba(255, 255, 255, 0.60)
+        ),
+        url(${cover})
+      `
+            : "none",
+        }}
+        animate={{
+          opacity: isInView ? 1 : 0,
+          scale: isInView ? 1 : 0.9,
+          transition: {
+            duration: 2,
+          },
         }}
         id="init"
       >
@@ -215,7 +230,7 @@ export default function Example() {
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
       <Features />
       <Plans />
       <Modal
