@@ -1,7 +1,7 @@
 import { LoadingOutlined } from "@ant-design/icons";
 import { createFileRoute } from "@tanstack/react-router";
 import { Formik } from "formik";
-import cover from "../../assets/capa.jpeg";
+import cover from "../../assets/capa.webp";
 import logo from "../../assets/logo1.svg";
 import { Input } from "../_components/Input";
 import { mixed, object, ref, string } from "yup";

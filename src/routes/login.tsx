@@ -3,7 +3,7 @@ import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { Formik } from "formik";
 import secureLocalStorage from "react-secure-storage";
 import { object, string } from "yup";
-import cover from "../assets/capa.jpeg";
+import cover from "../assets/capa.webp";
 import logo from "../assets/logo1.svg";
 import { useLogin } from "../services/auth/login";
 import { Input } from "./_components/Input";
