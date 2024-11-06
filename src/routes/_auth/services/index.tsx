@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   ContextMenu,
-  ContextMenuCheckboxItem,
   ContextMenuContent,
   ContextMenuItem,
   ContextMenuLabel,
@@ -28,10 +27,13 @@ import { useListBoards } from "@/services/boards/listBoards";
 import { useListMechanicals } from "@/services/mechanicals/lisMechanicals";
 import { useChangeServiceBoard } from "@/services/services/changeServiceBoard";
 import { useChangeServiceStepStatus } from "@/services/services/changeStepStatus";
+import { useDeleteService } from "@/services/services/deleteService";
+import { useUpdateService } from "@/services/services/updateService";
 import { CloseOutlined, FilePdfOutlined } from "@ant-design/icons";
 import {
   ChevronDoubleRightIcon,
   ChevronDownIcon,
+  PlusIcon,
   TrashIcon,
 } from "@heroicons/react/24/outline";
 import { createFileRoute } from "@tanstack/react-router";
@@ -58,8 +60,10 @@ function ServiceCard({ service, boardId }: any) {
     }),
   });
   const { mutate } = useChangeServiceStepStatus();
-  // const deleteService = useDeleteService();
+  const deleteService = useDeleteService();
   const [showSteps, setShowSteps] = useState(false);
+  const mechanicals = useListMechanicals();
+  const updateService = useUpdateService();
 
   return (
     <ContextMenu>
@@ -70,6 +74,18 @@ function ServiceCard({ service, boardId }: any) {
           style={{ cursor: "move" }}
         >
           <ul className="gap4 flex flex-col gap-1">
+            <li className="text-xs text-neutral-500">
+              <Avatar className="h-6 w-6">
+                <AvatarFallback
+                  style={{
+                    backgroundColor: service?.mechanical?.profileColor,
+                  }}
+                >
+                  {service?.mechanical?.firstname[0]}
+                  {service?.mechanical?.lastname[0]}
+                </AvatarFallback>{" "}
+              </Avatar>
+            </li>
             <li className="text-xs text-neutral-500">
               Cliente:{" "}
               <span className="text-xs text-neutral-900">
@@ -133,7 +149,10 @@ function ServiceCard({ service, boardId }: any) {
             <CloseOutlined width={14} />
           </ContextMenuShortcut>
         </ContextMenuItem>
-        <ContextMenuItem inset>
+        <ContextMenuItem
+          inset
+          onClick={() => deleteService.mutate({ serviceId: service._id })}
+        >
           Excluir serviço
           <ContextMenuShortcut>
             <TrashIcon width={14} />
@@ -161,15 +180,30 @@ function ServiceCard({ service, boardId }: any) {
             </ContextMenuShortcut>
           </ContextMenuItem>
         </a>
-        <ContextMenuCheckboxItem>Show Full URLs</ContextMenuCheckboxItem>
         <ContextMenuSeparator />
-        <ContextMenuRadioGroup value="pedro">
-          <ContextMenuLabel inset>Mecânico</ContextMenuLabel>
+        <ContextMenuRadioGroup value={service?.mechanical?._id}>
+          <ContextMenuLabel inset>Mecânico responsável</ContextMenuLabel>
           <ContextMenuSeparator />
-          <ContextMenuRadioItem value="pedro">
-            Pedro Duarte
-          </ContextMenuRadioItem>
-          <ContextMenuRadioItem value="colm">Colm Tuite</ContextMenuRadioItem>
+          {Array.isArray(mechanicals?.data) &&
+            mechanicals?.data?.map((mechanical) => (
+              <ContextMenuRadioItem
+                value={mechanical?._id}
+                onClick={() =>
+                  updateService.mutate({
+                    serviceId: service._id,
+                    body: { mechanical: mechanical._id },
+                  })
+                }
+                style={{
+                  backgroundColor:
+                    service?.mechanical?._id === mechanical._id
+                      ? mechanical.profileColor
+                      : undefined,
+                }}
+              >
+                {mechanical?.firstname} {mechanical?.lastname}
+              </ContextMenuRadioItem>
+            ))}
         </ContextMenuRadioGroup>
       </ContextMenuContent>
     </ContextMenu>
@@ -256,46 +290,49 @@ function Services() {
             AddonAfter={<Search width={16} />}
           />
           <div className="flex">
-            {mechanicals.data?.data?.map((mechanical, index) => {
-              if (index === 3)
+            {!Array.isArray(mechanicals?.data) &&
+              mechanicals.data?.data?.map((mechanical, index) => {
+                if (index === 3)
+                  return (
+                    <Avatar
+                      className={`z-[${index}] ml-[-8px] border-orange-400 border-opacity-50 transition-all duration-200 hover:z-50 hover:border-4`}
+                    >
+                      <AvatarFallback className="bg-neutral-300">
+                        +
+                        {!Array.isArray(mechanicals?.data) &&
+                          (mechanicals?.data?.data.length || 0) - 3}
+                      </AvatarFallback>
+                    </Avatar>
+                  );
                 return (
-                  <Avatar
-                    className={`z-[${index}] ml-[-8px] border-orange-400 border-opacity-50 transition-all duration-200 hover:z-50 hover:border-4`}
-                  >
-                    <AvatarFallback className="bg-neutral-300">
-                      +{(mechanicals?.data?.data.length || 0) - 3}
-                    </AvatarFallback>
-                  </Avatar>
-                );
-              return (
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger>
-                      <Avatar
-                        className={`z-[${index}] ml-[${index !== 0 ? "-8px" : ""}] border-orange-400 border-opacity-80 transition-all duration-200 hover:z-50 hover:border-2`}
-                      >
-                        <AvatarImage src={mechanical.profilePicture} />
-                        <AvatarFallback
-                          style={{
-                            backgroundColor: mechanical.profileColor,
-                          }}
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger>
+                        <Avatar
+                          className={`z-[${index}] ml-[${index !== 0 ? "-8px" : ""}] border-orange-400 border-opacity-80 transition-all duration-200 hover:z-50 hover:border-2`}
                         >
-                          {mechanical.firstname[0]}
-                          {mechanical.lastname[0]}
-                        </AvatarFallback>
-                      </Avatar>
-                    </TooltipTrigger>
-                    <TooltipContent side="bottom">
-                      <div className="flex flex-col gap-1">
-                        <span>
-                          {mechanical.firstname} {mechanical.lastname}
-                        </span>
-                      </div>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              );
-            })}
+                          <AvatarImage src={mechanical.profilePicture} />
+                          <AvatarFallback
+                            style={{
+                              backgroundColor: mechanical.profileColor,
+                            }}
+                          >
+                            {mechanical.firstname[0]}
+                            {mechanical.lastname[0]}
+                          </AvatarFallback>
+                        </Avatar>
+                      </TooltipTrigger>
+                      <TooltipContent side="bottom">
+                        <div className="flex flex-col gap-1">
+                          <span>
+                            {mechanical.firstname} {mechanical.lastname}
+                          </span>
+                        </div>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                );
+              })}
             <Avatar
               className={
                 "ml-[-8px] border-orange-400 border-opacity-50 transition-all duration-200 hover:z-50 hover:border-4"
@@ -305,6 +342,12 @@ function Services() {
                 +
               </AvatarFallback>
             </Avatar>
+          </div>
+          <div>
+            <Button>
+              <PlusIcon width={18} />
+              Novo orçamento
+            </Button>
           </div>
         </div>
         <div

@@ -13,7 +13,7 @@ export const Route = createFileRoute("/_register/registerSubdomain")({
 
 const plans = ["free-trial", "self-employed", "medium-garage", "big-garage"];
 const plansPrices = {
-  "self-employed": 19.99,
+  "self-employed": 29.99,
   "medium-garage": 49.99,
   "big-garage": 99.99,
   "free-trial": 0,

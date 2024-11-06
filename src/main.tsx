@@ -11,7 +11,6 @@ import { AuthProvider } from "./contexts/useAuth";
 import "./index.css";
 import { routeTree } from "./routeTree.gen";
 import { queryClient } from "./services/queryClient";
-import Dark from "./themes/dark";
 
 // Create a new router instance
 const router = createRouter({ routeTree });
@@ -29,7 +28,7 @@ if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(
     <AuthProvider>
-      <ConfigProvider locale={ptbr} theme={Dark}>
+      <ConfigProvider locale={ptbr}>
         <QueryClientProvider client={queryClient}>
           <StrictMode>
             <Toaster />

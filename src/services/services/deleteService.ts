@@ -6,7 +6,7 @@ export const useDeleteService = () => {
   const mutation = useMutation<
     any | null | undefined,
     unknown,
-    { serviceId: string; stepId: string }
+    { serviceId: string }
   >({
     mutationFn: async ({ serviceId }) => {
       const response = await api.delete(`/services/${serviceId}`);

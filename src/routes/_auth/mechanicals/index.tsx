@@ -102,7 +102,7 @@ function Mechanicals() {
               new Date(row.getValue("createdAt")).toLocaleDateString(),
           },
         ]}
-        data={data?.data || []}
+        data={!Array.isArray(data) ? data?.data || [] : []}
       />
       <CreateMechanical open={isCreateOpen} setOpen={setIsCreateOpen} />
     </Drawer>

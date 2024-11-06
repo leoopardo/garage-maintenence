@@ -1,6 +1,8 @@
 import { api } from "@/config/api";
 import { useMutation } from "react-query";
 import { queryClient } from "../queryClient";
+import toast from "react-hot-toast";
+import { ToastError } from "@/components/toast.contents";
 
 export const useChangeServiceBoard = () => {
   const mutation = useMutation<
@@ -25,10 +27,13 @@ export const useChangeServiceBoard = () => {
   //   setOpen(false);
   // }
 
-  // if (error) {
-  //   toast.error("Erro ao cadastrar mecânico!", { position: "top-left" });
-  //   reset();
-  // }
+  if (error) {
+    toast.custom(
+      (t) => <ToastError error={error} t={t} title="Erro ao mudar situação" />,
+      { position: "top-right", duration: 5000 },
+    );
+    reset();
+  }
 
   return {
     mutate,
